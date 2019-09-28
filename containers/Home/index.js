@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import getUser from 'app/api/getUser';
 import {
@@ -17,6 +17,7 @@ import {
   Item,
   Input,
   Text,
+  Spinner,
 } from 'native-base';
 import styles from './styles';
 
@@ -26,21 +27,44 @@ export default class Home extends React.Component {
   };
 
   state = {
+    loading: false,
     search: '',
-    user: {},
+    response: {},
   };
 
   searchUser = async () => {
     const { search } = this.state;
-    const user = await getUser(search);
-    this.setState({ user });
+    if (search !== '') {
+      this.setState({ loading: true });
+      const response = await getUser(search);
+      this.setState({ response, loading: false });
+    }
   };
 
-  renderUserNotFound = user => <Text>{user.message}</Text>;
+  renderError = response => {
+    if (response.error) {
+      return (
+        <Card>
+          <CardItem>
+            <Body>
+              <Text style={styles.errorMsg}>{response.message}</Text>
+            </Body>
+          </CardItem>
+        </Card>
+      );
+    }
+  };
+
+  showSpinner = () => {
+    const { loading } = this.state;
+    if (loading) {
+      return <Spinner color="#24292e" />;
+    }
+  };
 
   render() {
     const { navigation } = this.props;
-    const { search, user } = this.state;
+    const { search, response } = this.state;
     return (
       <Container>
         <Header style={{ backgroundColor: '#24292e' }}>
@@ -62,13 +86,18 @@ export default class Home extends React.Component {
               placeholder="Search"
               value={search}
               onChangeText={val => this.setState({ search: val })}
+              returnKeyType="search"
+              onSubmitEditing={this.searchUser}
             />
-            <Icon name="ios-close" />
-            <Button transparent onPress={() => this.searchUser()}>
+            <Button transparent onPress={() => this.setState({ search: '' })}>
+              <Icon name="ios-close" />
+            </Button>
+            <Button transparent disabled={search === ''} onPress={() => this.searchUser()}>
               <Text>Search</Text>
             </Button>
           </Item>
-          {this.renderUserNotFound(user)}
+          {this.renderError(response)}
+          {this.showSpinner()}
         </Content>
       </Container>
     );

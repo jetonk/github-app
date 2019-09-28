@@ -23,7 +23,8 @@ const getUserQuery = async search => {
 
 const getUser = async search => {
   const result = await getUserQuery(search).catch(async err => {
-    return { error: true, message: err.message };
+    const message = err.graphQLErrors.length > 0 ? err.graphQLErrors[0].message : err.message;
+    return { error: true, message };
   });
   return result;
 };

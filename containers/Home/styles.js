@@ -7,5 +7,8 @@ const styles = StyleSheet.create({
   inputSearch: {
     width: '70%',
   },
+  errorMsg: {
+    color: 'red',
+  },
 });
 export default styles;
