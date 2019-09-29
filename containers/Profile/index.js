@@ -52,11 +52,13 @@ class Profile extends React.Component {
           <CardItem>
             <View style={styles.avatar}>
               <Thumbnail source={{ uri: user.avatarUrl }} />
-              <Text style={styles.nameLabel}>{user.name}</Text>
             </View>
             <ProfileInfo totalCount={user.starredRepositories.totalCount} text="Starred" />
             <ProfileInfo totalCount={user.followers.totalCount} text="Followers" />
             <ProfileInfo totalCount={user.following.totalCount} text="Following" />
+          </CardItem>
+          <CardItem>
+            <Text style={styles.nameLabel}>{user.name}</Text>
           </CardItem>
           {user.bio !== '' && (
             <Card>
