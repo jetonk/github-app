@@ -18,7 +18,7 @@ Android: https://play.google.com/store/apps/details?id=host.exp.exponent
 iPhone: 
 https://apps.apple.com/us/app/expo-client/id982107779
 
-### 2) `.env` file on Root Directory of the project which should contain these Environemnt Variables
+### 2) `.env` file on Root Directory of the project which should contain these Environment Variables
 `API_URL=https://api.github.com/graphql`
 
 `GITHUB_API_TOKEN=token `
@@ -31,4 +31,4 @@ https://apps.apple.com/us/app/expo-client/id982107779
 ### 3) Final step it's to install all the dependencies by going to the Root Directory of the project and run the commands below:
 ### `yarn install`
 ### `yarn start`
-### New tab on your browser will open instantly, scan the QR Code using your phone camera, and open it using the Expo Client.
+### New tab on your browser will open instantly,scan the QR Code using your phone camera, and open it using the Expo Client.
