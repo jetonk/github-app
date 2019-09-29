@@ -1,11 +1,7 @@
-import {
-  START_FETCHING,
-  FETCH_USER_DATA,
-  SET_USER_DATA,
-  FETCH_USER_DATA_FAILED,
-} from 'app/constants';
+import { START_FETCHING, SET_USER_DATA, FETCH_USER_DATA_FAILED, CLEAR } from 'app/constants';
 
 const initialState = {
+  search: '',
   user: {},
   loading: false,
   error: {
@@ -28,7 +24,7 @@ function userReducer(state = initialState, action) {
         loading: false,
         error: {
           status: false,
-          messagE: '',
+          message: '',
         },
       };
     case FETCH_USER_DATA_FAILED: {
@@ -42,6 +38,8 @@ function userReducer(state = initialState, action) {
         },
       };
     }
+    case CLEAR:
+      return initialState;
     default:
       return state;
   }

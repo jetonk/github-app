@@ -1,39 +1,72 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import AppHeader from 'app/components/AppHeader';
-import PropTypes from 'prop-types';
-import { mainTypes } from 'app/types/';
+import { View, Linking } from 'react-native';
+import { mainTypes } from 'app/types';
 import {
   Container,
-  Header,
-  Icon,
-  Left,
-  Right,
-  Button,
-  Title,
-  Body,
   Content,
   Card,
   CardItem,
-  Item,
-  Input,
+  Body,
+  Right,
+  Thumbnail,
   Text,
-  Spinner,
+  List,
+  ListItem,
 } from 'native-base';
+import ProfileInfo from 'app/components/ProfileInfo';
 import styles from './styles';
 
 class Profile extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Profile',
+  };
+
+  formatDate = date => {
+    return new Date(date).toISOString().slice(0, 10);
+  };
+
+  openRepositoryURL = url => {
+    Linking.openURL(url);
   };
 
   render() {
-    const { user, navigation } = this.props;
+    const { user } = this.props;
     return (
       <Container>
-        <AppHeader title={user.name} />
-        <Content padder>
-          <Text>Profile !!!</Text>
+        <Content>
+          <CardItem>
+            <View style={styles.avatar}>
+              <Thumbnail source={{ uri: user.avatarUrl }} />
+              <Text style={styles.nameLabel}>{user.name}</Text>
+            </View>
+            <ProfileInfo totalCount={user.starredRepositories.totalCount} text="Starred" />
+            <ProfileInfo totalCount={user.followers.totalCount} text="Followers" />
+            <ProfileInfo totalCount={user.following.totalCount} text="Following" />
+          </CardItem>
+          <Card>
+            <CardItem>
+              <Text>{user.bio}</Text>
+            </CardItem>
+          </Card>
+          <Card>
+            <CardItem>
+              <Text>Repositories</Text>
+            </CardItem>
+          </Card>
+          <List>
+            {user.repositories.nodes.map(repo => (
+              <ListItem key={repo.name} onPress={() => this.openRepositoryURL(repo.url)}>
+                <Body>
+                  <Text>{repo.name}</Text>
+                  <Text note>{repo.description}</Text>
+                </Body>
+                <Right>
+                  <Text note>{this.formatDate(repo.pushedAt)}</Text>
+                </Right>
+              </ListItem>
+            ))}
+          </List>
         </Content>
       </Container>
     );
@@ -42,12 +75,10 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   user: mainTypes.user,
-  navigation: mainTypes.navigation,
 };
 
 Profile.defaultProps = {
   user: {},
-  navigation: undefined,
 };
 
 const mapStateToProps = ({ userReducer }) => {

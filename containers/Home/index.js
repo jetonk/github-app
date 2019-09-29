@@ -2,39 +2,21 @@ import React from 'react';
 import { Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import AppHeader from 'app/components/AppHeader';
 import ShowError from 'app/components/ShowError';
 import UserCard from 'app/components/UserCard';
-import { mainTypes } from 'app/types/';
-import {
-  Container,
-  Icon,
-  Left,
-  Button,
-  Body,
-  Content,
-  Card,
-  CardItem,
-  Item,
-  Input,
-  Text,
-  Spinner,
-  Thumbnail,
-} from 'native-base';
-import { fetchUserData } from 'app/actions';
-import styles from './styles';
+import { mainTypes } from 'app/types';
+import { Container, Icon, Button, Content, Item, Input, Text, Spinner } from 'native-base';
+import { fetchUserData, clear } from 'app/actions';
 
 class Home extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Github App',
   };
 
   state = {
-    search: '',
+    search: 'jetonk',
     fadeValue: new Animated.Value(0),
   };
-
-  componentDidMount = () => {};
 
   searchUser = async () => {
     const { search, fadeValue } = this.state;
@@ -63,25 +45,6 @@ class Home extends React.Component {
     }
   };
 
-  renderUserCard = () => {
-    const { user, error } = this.props;
-    if (Object.keys(user).length && !error.status) {
-      return (
-        <Card>
-          <CardItem>
-            <Left>
-              <Thumbnail source={{ uri: user.avatarUrl }} />
-              <Body>
-                <Text>{user.name}</Text>
-                <Text note>{user.bio}</Text>
-              </Body>
-            </Left>
-          </CardItem>
-        </Card>
-      );
-    }
-  };
-
   showSpinner = () => {
     const { loading } = this.props;
     if (loading) {
@@ -90,11 +53,9 @@ class Home extends React.Component {
   };
 
   render() {
-    const { user, error, navigation } = this.props;
-    const { search } = this.state;
+    const { search, user, error, navigation } = this.props;
     return (
       <Container>
-        <AppHeader title="Github App" />
         <Content padder>
           <Item rounded searchBar>
             <Icon name="ios-search" />
@@ -105,7 +66,7 @@ class Home extends React.Component {
               returnKeyType="search"
               onSubmitEditing={this.searchUser}
             />
-            <Button transparent onPress={() => this.setState({ search: '' })}>
+            <Button transparent onPress={() => this.props.clear()}>
               <Icon name="ios-close" />
             </Button>
             <Button transparent disabled={search === ''} onPress={() => this.searchUser()}>
@@ -114,7 +75,6 @@ class Home extends React.Component {
           </Item>
           {this.renderError()}
           {this.showSpinner()}
-          {/* {this.renderUserCard()} */}
           <UserCard user={user} error={error} navigation={navigation} />
         </Content>
       </Container>
@@ -123,11 +83,16 @@ class Home extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ fetchUserData }, dispatch);
+  return bindActionCreators({ fetchUserData, clear }, dispatch);
 };
 
 const mapStateToProps = ({ userReducer }) => {
-  return { loading: userReducer.loading, user: userReducer.user, error: userReducer.error };
+  return {
+    loading: userReducer.loading,
+    search: userReducer.search,
+    user: userReducer.user,
+    error: userReducer.error,
+  };
 };
 
 export default connect(

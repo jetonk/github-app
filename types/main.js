@@ -6,6 +6,7 @@ export default {
   }).isRequired,
   loading: PropTypes.bool.isRequired,
   fetchUserData: PropTypes.func.isRequired,
+  clear: PropTypes.func.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string,
     avatarUrl: PropTypes.string,

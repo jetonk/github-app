@@ -1,9 +1,4 @@
-import {
-  START_FETCHING,
-  FETCH_USER_DATA,
-  SET_USER_DATA,
-  FETCH_USER_DATA_FAILED,
-} from 'app/constants';
+import { START_FETCHING, SET_USER_DATA, FETCH_USER_DATA_FAILED, CLEAR } from 'app/constants';
 import getUserQuery from 'app/api/getUser';
 
 const startFetching = () => {
@@ -26,4 +21,8 @@ export const fetchUserData = payload => {
       dispatch(fetchUserDataFailed(error));
     }
   };
+};
+
+export const clear = () => {
+  return { type: CLEAR };
 };

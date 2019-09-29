@@ -9,24 +9,26 @@ const getUser = async search => {
           name
           avatarUrl
           bio
-          repositories(first: 50, isFork: false) {
+          repositories(first: 100) {
             nodes {
               name
+              description
               url
+              pushedAt
             }
+          }
+    			followers {
+            totalCount
+          }
+    			following {
+            totalCount
+          }
+    			starredRepositories {
+            totalCount
           }
         }
       }
     `,
   });
 };
-
-// const getUser = async search => {
-//   const result = await getUserQuery(search).catch(async err => {
-//     const message = err.graphQLErrors.length > 0 ? err.graphQLErrors[0].message : err.message;
-//     return { error: true, message };
-//   });
-//   console.log('result', result);
-//   return result;
-// };
 export default getUser;
