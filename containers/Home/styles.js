@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  btndrawerOpen: {
+    color: '#ffffff',
+  },
   body: {
     color: '#ffffff',
   },

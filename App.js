@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { Provider } from 'react-redux';
 import AppNavigator from 'app/router';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { ApolloProvider } from 'react-apollo';
-import client from 'app/api/apollo';
+import store from 'app/store';
 
 class App extends Component {
   state = {
@@ -26,9 +26,9 @@ class App extends Component {
       return <View />;
     }
     return (
-      <ApolloProvider client={client}>
+      <Provider store={store}>
         <AppNavigator />
-      </ApolloProvider>
+      </Provider>
     );
   }
 }

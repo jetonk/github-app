@@ -1,7 +1,9 @@
 import React from 'react';
-import { StatusBar, TouchableOpacity } from 'react-native';
+import { StatusBar, Animated } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import ShowError from 'app/components/ShowError';
 import PropTypes from 'prop-types';
-import getUser from 'app/api/getUser';
 import {
   Container,
   Header,
@@ -18,37 +20,63 @@ import {
   Input,
   Text,
   Spinner,
+  Thumbnail,
 } from 'native-base';
+import { fetchUserData } from 'app/actions';
 import styles from './styles';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
   state = {
-    loading: false,
     search: '',
-    response: {},
+    fadeValue: new Animated.Value(0),
   };
 
+  componentDidMount = () => {};
+
   searchUser = async () => {
-    const { search } = this.state;
+    const { search, fadeValue } = this.state;
     if (search !== '') {
-      this.setState({ loading: true });
-      const response = await getUser(search);
-      this.setState({ response, loading: false });
+      await this.props.fetchUserData(search);
+      Animated.timing(fadeValue, {
+        toValue: 1,
+        duration: 1000,
+      }).start();
     }
   };
 
-  renderError = response => {
-    if (response.error) {
+  renderError = () => {
+    const { error } = this.props;
+    const { fadeValue } = this.state;
+    if (error.status) {
+      return (
+        <Animated.View
+          style={{
+            opacity: fadeValue,
+          }}
+        >
+          <ShowError message={error.message} />
+        </Animated.View>
+      );
+    }
+  };
+
+  renderUserCard = () => {
+    const { user, error } = this.props;
+    if (Object.keys(user).length && !error.status) {
       return (
         <Card>
           <CardItem>
-            <Body>
-              <Text style={styles.errorMsg}>{response.message}</Text>
-            </Body>
+            <Left>
+              <Thumbnail source={{ uri: user.avatarUrl }} />
+              <Body>
+                <Text>{user.name}</Text>
+                <Text note>{user.bio}</Text>
+              </Body>
+            </Left>
           </CardItem>
         </Card>
       );
@@ -56,7 +84,7 @@ export default class Home extends React.Component {
   };
 
   showSpinner = () => {
-    const { loading } = this.state;
+    const { loading } = this.props;
     if (loading) {
       return <Spinner color="#24292e" />;
     }
@@ -64,13 +92,17 @@ export default class Home extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { search, response } = this.state;
+    const { search } = this.state;
     return (
       <Container>
         <Header style={{ backgroundColor: '#24292e' }}>
           <StatusBar backgroundColor="#24292e" />
           <Left>
-            <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
+            <Button
+              style={styles.btndrawerOpen}
+              transparent
+              onPress={() => navigation.navigate('DrawerOpen')}
+            >
               <Icon name="menu" />
             </Button>
           </Left>
@@ -96,16 +128,47 @@ export default class Home extends React.Component {
               <Text>Search</Text>
             </Button>
           </Item>
-          {this.renderError(response)}
+          {this.renderError()}
           {this.showSpinner()}
+          {this.renderUserCard()}
         </Content>
       </Container>
     );
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ fetchUserData }, dispatch);
+};
+
+const mapStateToProps = ({ userReducer }) => {
+  return { loading: userReducer.loading, user: userReducer.user, error: userReducer.error };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
+
 Home.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }).isRequired,
+  loading: PropTypes.bool.isRequired,
+  fetchUserData: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    avatarUrl: PropTypes.string,
+    bio: PropTypes.string,
+    repositories: PropTypes.object,
+  }),
+  error: PropTypes.shape({
+    status: PropTypes.bool,
+    message: PropTypes.string,
+  }),
+};
+
+Home.defaultProps = {
+  user: undefined,
+  error: undefined,
 };

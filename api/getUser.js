@@ -1,7 +1,7 @@
 import { gql } from 'apollo-boost';
 import client from './apollo';
 
-const getUserQuery = async search => {
+const getUser = async search => {
   return client.query({
     query: gql`
       {
@@ -21,11 +21,12 @@ const getUserQuery = async search => {
   });
 };
 
-const getUser = async search => {
-  const result = await getUserQuery(search).catch(async err => {
-    const message = err.graphQLErrors.length > 0 ? err.graphQLErrors[0].message : err.message;
-    return { error: true, message };
-  });
-  return result;
-};
+// const getUser = async search => {
+//   const result = await getUserQuery(search).catch(async err => {
+//     const message = err.graphQLErrors.length > 0 ? err.graphQLErrors[0].message : err.message;
+//     return { error: true, message };
+//   });
+//   console.log('result', result);
+//   return result;
+// };
 export default getUser;
