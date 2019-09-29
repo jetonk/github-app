@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import AppNavigator from 'app/router';
+import AppNavigator from 'app/routes';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import store from 'app/store';

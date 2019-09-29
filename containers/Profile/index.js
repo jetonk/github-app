@@ -1,8 +1,8 @@
 import React from 'react';
-import { StatusBar, Animated } from 'react-native';
-import ShowError from 'app/components/ShowError';
+import { connect } from 'react-redux';
+import AppHeader from 'app/components/AppHeader';
 import PropTypes from 'prop-types';
-import getUser from 'app/api/getUser';
+import { mainTypes } from 'app/types/';
 import {
   Container,
   Header,
@@ -22,66 +22,36 @@ import {
 } from 'native-base';
 import styles from './styles';
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  state = {
-    loading: false,
-  };
-
-  showSpinner = () => {
-    const { loading } = this.state;
-    if (loading) {
-      return <Spinner color="#24292e" />;
-    }
-  };
-
   render() {
-    const { navigation } = this.props;
-    const { search, response } = this.state;
+    const { user, navigation } = this.props;
     return (
       <Container>
-        <Header style={{ backgroundColor: '#24292e' }}>
-          <StatusBar backgroundColor="#24292e" />
-          <Left>
-            <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={styles.body}>Github App</Title>
-          </Body>
-          <Right />
-        </Header>
+        <AppHeader title={user.name} />
         <Content padder>
-          <Item rounded searchBar>
-            <Icon name="ios-search" />
-            <Input
-              placeholder="Search"
-              value={search}
-              onChangeText={val => this.setState({ search: val })}
-              returnKeyType="search"
-              onSubmitEditing={this.searchUser}
-            />
-            <Button transparent onPress={() => this.setState({ response: {}, search: '' })}>
-              <Icon name="ios-close" />
-            </Button>
-            <Button transparent disabled={search === ''} onPress={() => this.searchUser()}>
-              <Text>Search</Text>
-            </Button>
-          </Item>
-          {this.renderError(response)}
-          {this.showSpinner()}
+          <Text>Profile !!!</Text>
         </Content>
       </Container>
     );
   }
 }
 
-Home.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
+Profile.propTypes = {
+  user: mainTypes.user,
+  navigation: mainTypes.navigation,
 };
+
+Profile.defaultProps = {
+  user: {},
+  navigation: undefined,
+};
+
+const mapStateToProps = ({ userReducer }) => {
+  return { loading: userReducer.loading, user: userReducer.user };
+};
+
+export default connect(mapStateToProps)(Profile);

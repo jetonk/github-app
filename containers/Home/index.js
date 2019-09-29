@@ -1,17 +1,16 @@
 import React from 'react';
-import { StatusBar, Animated } from 'react-native';
+import { Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import AppHeader from 'app/components/AppHeader';
 import ShowError from 'app/components/ShowError';
-import PropTypes from 'prop-types';
+import UserCard from 'app/components/UserCard';
+import { mainTypes } from 'app/types/';
 import {
   Container,
-  Header,
   Icon,
   Left,
-  Right,
   Button,
-  Title,
   Body,
   Content,
   Card,
@@ -91,26 +90,11 @@ class Home extends React.Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { user, error, navigation } = this.props;
     const { search } = this.state;
     return (
       <Container>
-        <Header style={{ backgroundColor: '#24292e' }}>
-          <StatusBar backgroundColor="#24292e" />
-          <Left>
-            <Button
-              style={styles.btndrawerOpen}
-              transparent
-              onPress={() => navigation.navigate('DrawerOpen')}
-            >
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={styles.body}>Github App</Title>
-          </Body>
-          <Right />
-        </Header>
+        <AppHeader title="Github App" />
         <Content padder>
           <Item rounded searchBar>
             <Icon name="ios-search" />
@@ -130,7 +114,8 @@ class Home extends React.Component {
           </Item>
           {this.renderError()}
           {this.showSpinner()}
-          {this.renderUserCard()}
+          {/* {this.renderUserCard()} */}
+          <UserCard user={user} error={error} navigation={navigation} />
         </Content>
       </Container>
     );
@@ -150,23 +135,7 @@ export default connect(
   mapDispatchToProps
 )(Home);
 
-Home.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }).isRequired,
-  loading: PropTypes.bool.isRequired,
-  fetchUserData: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    name: PropTypes.string,
-    avatarUrl: PropTypes.string,
-    bio: PropTypes.string,
-    repositories: PropTypes.object,
-  }),
-  error: PropTypes.shape({
-    status: PropTypes.bool,
-    message: PropTypes.string,
-  }),
-};
+Home.propTypes = mainTypes;
 
 Home.defaultProps = {
   user: undefined,

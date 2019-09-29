@@ -4,9 +4,6 @@ const styles = StyleSheet.create({
   btndrawerOpen: {
     color: '#ffffff',
   },
-  body: {
-    color: '#ffffff',
-  },
   inputSearch: {
     width: '70%',
   },

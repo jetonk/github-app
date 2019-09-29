@@ -1,11 +1,11 @@
 import React from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { Header, Icon, Left, Title, Body, Text } from 'native-base';
+import { Header, Icon, Left, Right, Title, Body, Button } from 'native-base';
 
 const styles = StyleSheet.create({
-  errorMsg: {
-    color: 'red',
+  white: {
+    color: '#ffffff',
   },
 });
 
@@ -14,17 +14,17 @@ const AppHeader = ({ title }) => (
     <StatusBar backgroundColor="#24292e" />
     <Left>
       <Button transparent onPress={() => navigation.navigate('DrawerOpen')}>
-        <Icon name="menu" />
+        <Icon name="menu" style={styles.white} />
       </Button>
     </Left>
     <Body>
-      <Title style={styles.body}>Github App</Title>
+      <Title style={styles.white}>{title}</Title>
     </Body>
     <Right />
   </Header>
 );
 
-Header.propTypes = {
+AppHeader.propTypes = {
   title: PropTypes.string.isRequired,
 };
 export default AppHeader;
