@@ -25,7 +25,8 @@ https://apps.apple.com/us/app/expo-client/id982107779
 
 ### To generate the `GITHUB_API_TOKEN` go to the link below: 
 - https://github.com/settings/tokens
-### Click the button Generate new token, get the token save into the `.env` file as `GITHUB_API_TOKEN`
+### Click the button Generate new token, on the Scope Permission, please select `user` and click on the button Generate token.
+### Get the token save into the `.env` file as `GITHUB_API_TOKEN`
 
 
 ### 3) Final step it's to install all the dependencies by going to the Root Directory of the project and run the commands below:
