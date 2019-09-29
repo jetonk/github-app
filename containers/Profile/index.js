@@ -53,7 +53,7 @@ class Profile extends React.Component {
             <View style={styles.avatar}>
               <Thumbnail source={{ uri: user.avatarUrl }} />
             </View>
-            <ProfileInfo totalCount={user.starredRepositories.totalCount} text="Starred" />
+            <ProfileInfo totalCount={user.starredRepositories.totalCount} text="Stars" />
             <ProfileInfo totalCount={user.followers.totalCount} text="Followers" />
             <ProfileInfo totalCount={user.following.totalCount} text="Following" />
           </CardItem>
