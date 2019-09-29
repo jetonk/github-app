@@ -11,11 +11,11 @@
 ## Required steps to start the App: 
 ### 1 ) In order to start the app these are the requirements
 
-### node version v10.16.1
-### yarn version 1.17.3 or npm verison 6.10.0
-### `yarn global add expo-cli`
-### or
-### `npm install -g expo-cli`
+#### node version v10.16.1
+#### yarn version 1.17.3 or npm verison 6.10.0
+#### `yarn global add expo-cli`
+#### or
+#### `npm install -g expo-cli`
 
 ### Expo client on your
 Android: https://play.google.com/store/apps/details?id=host.exp.exponent
@@ -30,11 +30,11 @@ https://apps.apple.com/us/app/expo-client/id982107779
 
 ### To generate the `GITHUB_API_TOKEN` go to the link below: 
 - https://github.com/settings/tokens
-### Click the button Generate new token, on the Scope Permission, please select `user` and click on the button Generate token.
-### Get the token save into the `.env` file as `GITHUB_API_TOKEN`
+#### Click the button Generate new token, on the Scope Permission, please select `user` and click on the button Generate token.
+#### Get the token save into the `.env` file as `GITHUB_API_TOKEN`
 
 
 ### 3) Final step it's to install all the dependencies by going to the Root Directory of the project and run the commands below:
-### `yarn install`
-### `yarn start`
-### New tab on your browser will open instantly,scan the QR Code using your phone camera, and open it using the Expo Client.
+#### `yarn install`
+#### `yarn start`
+#### New tab on your browser will open instantly,scan the QR Code using your phone camera, and open it using the Expo Client.
