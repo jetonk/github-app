@@ -9,8 +9,13 @@
 - ESlint AirBnb Style
 
 ## Required steps to start the App: 
-### 1 ) In order to start the app you need to have installed expo-cli globally on your machine: 
-### `yarn global add expo-cli` 
+### 1 ) In order to start the app these are the requirements
+
+### node version v10.16.1
+### yarn version 1.17.3 or npm verison 6.10.0
+### `yarn global add expo-cli`
+### or
+### `npm install -g expo-cli`
 
 ### Expo client on your
 Android: https://play.google.com/store/apps/details?id=host.exp.exponent
