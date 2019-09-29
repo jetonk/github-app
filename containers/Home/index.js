@@ -6,20 +6,24 @@ import ShowError from 'app/components/ShowError';
 import UserCard from 'app/components/UserCard';
 import { mainTypes } from 'app/types';
 import { Container, Icon, Button, Content, Item, Input, Text, Spinner } from 'native-base';
-import { fetchUserData, clear } from 'app/actions';
+import { searchUser, fetchUserData, clear } from 'app/actions';
 
 class Home extends React.Component {
   static navigationOptions = {
     title: 'Github App',
+    headerTitleStyle: {
+      flex: 1,
+      textAlign: 'center',
+    },
   };
 
   state = {
-    search: 'jetonk',
     fadeValue: new Animated.Value(0),
   };
 
-  searchUser = async () => {
-    const { search, fadeValue } = this.state;
+  handleSearchUser = async () => {
+    const { fadeValue } = this.state;
+    const { search } = this.props;
     if (search !== '') {
       await this.props.fetchUserData(search);
       Animated.timing(fadeValue, {
@@ -56,26 +60,26 @@ class Home extends React.Component {
     const { search, user, error, navigation } = this.props;
     return (
       <Container>
-        <Content padder>
+        <Content bounces={false} padder>
           <Item rounded searchBar>
             <Icon name="ios-search" />
             <Input
-              placeholder="Search"
+              placeholder="Type Github User"
               value={search}
-              onChangeText={val => this.setState({ search: val })}
+              onChangeText={val => this.props.searchUser(val)}
               returnKeyType="search"
-              onSubmitEditing={this.searchUser}
+              onSubmitEditing={this.handleSearchUser}
             />
             <Button transparent onPress={() => this.props.clear()}>
               <Icon name="ios-close" />
             </Button>
-            <Button transparent disabled={search === ''} onPress={() => this.searchUser()}>
+            <Button transparent disabled={search === ''} onPress={() => this.handleSearchUser()}>
               <Text>Search</Text>
             </Button>
           </Item>
           {this.renderError()}
           {this.showSpinner()}
-          <UserCard user={user} error={error} navigation={navigation} />
+          {user && <UserCard user={user} error={error} navigation={navigation} />}
         </Content>
       </Container>
     );
@@ -83,7 +87,7 @@ class Home extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ fetchUserData, clear }, dispatch);
+  return bindActionCreators({ searchUser, fetchUserData, clear }, dispatch);
 };
 
 const mapStateToProps = ({ userReducer }) => {

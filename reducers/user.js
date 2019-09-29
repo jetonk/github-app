@@ -1,4 +1,10 @@
-import { START_FETCHING, SET_USER_DATA, FETCH_USER_DATA_FAILED, CLEAR } from 'app/constants';
+import {
+  SEARCH,
+  START_FETCHING,
+  SET_USER_DATA,
+  FETCH_USER_DATA_FAILED,
+  CLEAR,
+} from 'app/constants';
 
 const initialState = {
   search: '',
@@ -12,6 +18,11 @@ const initialState = {
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
+    case SEARCH:
+      return {
+        ...state,
+        search: action.payload,
+      };
     case START_FETCHING:
       return {
         ...state,

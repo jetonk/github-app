@@ -1,5 +1,15 @@
-import { START_FETCHING, SET_USER_DATA, FETCH_USER_DATA_FAILED, CLEAR } from 'app/constants';
+import {
+  SEARCH,
+  START_FETCHING,
+  SET_USER_DATA,
+  FETCH_USER_DATA_FAILED,
+  CLEAR,
+} from 'app/constants';
 import getUserQuery from 'app/api/getUser';
+
+export const searchUser = keyword => {
+  return { type: SEARCH, payload: keyword };
+};
 
 const startFetching = () => {
   return { type: START_FETCHING };

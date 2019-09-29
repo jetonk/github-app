@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   numberLabel: {
     fontSize: 22,
+    textAlign: 'center',
   },
 });
 

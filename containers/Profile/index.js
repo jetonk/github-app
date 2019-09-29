@@ -13,13 +13,27 @@ import {
   Text,
   List,
   ListItem,
+  Button,
+  Icon,
 } from 'native-base';
 import ProfileInfo from 'app/components/ProfileInfo';
 import styles from './styles';
 
 class Profile extends React.Component {
-  static navigationOptions = {
-    title: 'Profile',
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Profile',
+      headerTitleStyle: {
+        flex: 1,
+        textAlign: 'center',
+      },
+      headerLeft: (
+        <Button transparent onPress={() => navigation.navigate('Home')}>
+          <Icon name="arrow-back" />
+        </Button>
+      ),
+      headerRight: <View />,
+    };
   };
 
   formatDate = date => {
@@ -44,11 +58,13 @@ class Profile extends React.Component {
             <ProfileInfo totalCount={user.followers.totalCount} text="Followers" />
             <ProfileInfo totalCount={user.following.totalCount} text="Following" />
           </CardItem>
-          <Card>
-            <CardItem>
-              <Text>{user.bio}</Text>
-            </CardItem>
-          </Card>
+          {user.bio !== '' && (
+            <Card>
+              <CardItem>
+                <Text>{user.bio}</Text>
+              </CardItem>
+            </Card>
+          )}
           <Card>
             <CardItem>
               <Text>Repositories</Text>
