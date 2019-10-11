@@ -1,12 +1,12 @@
 import React from 'react';
-import { Animated } from 'react-native';
+import { Animated, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ShowError from 'app/components/ShowError';
 import UserCard from 'app/components/UserCard';
 import { mainTypes } from 'app/types';
 import { Container, Icon, Button, Content, Item, Input, Text, Spinner } from 'native-base';
-import { searchUser, fetchUserData, clear } from 'app/actions';
+import { searchUser, fetchSearchData, setUserData, clear } from 'app/actions';
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -25,7 +25,7 @@ class Home extends React.Component {
     const { fadeValue } = this.state;
     const { search } = this.props;
     if (search !== '') {
-      await this.props.fetchUserData(search);
+      await this.props.fetchSearchData(search);
       Animated.timing(fadeValue, {
         toValue: 1,
         duration: 1000,
@@ -56,8 +56,14 @@ class Home extends React.Component {
     }
   };
 
+  showUser = async user => {
+    const { navigation } = this.props;
+    this.props.setUserData(user);
+    navigation.navigate('Profile', user);
+  };
+
   render() {
-    const { search, user, error, navigation } = this.props;
+    const { search, users, error } = this.props;
     return (
       <Container>
         <Content bounces={false} padder>
@@ -79,7 +85,18 @@ class Home extends React.Component {
           </Item>
           {this.renderError()}
           {this.showSpinner()}
-          {user && <UserCard user={user} error={error} navigation={navigation} />}
+          {users.map(user => {
+            if (user.node.name) {
+              return (
+                <UserCard
+                  key={user.node.login}
+                  user={user.node}
+                  error={error}
+                  showUser={this.showUser}
+                />
+              );
+            }
+          })}
         </Content>
       </Container>
     );
@@ -87,13 +104,14 @@ class Home extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ searchUser, fetchUserData, clear }, dispatch);
+  return bindActionCreators({ searchUser, fetchSearchData, setUserData, clear }, dispatch);
 };
 
 const mapStateToProps = ({ userReducer }) => {
   return {
     loading: userReducer.loading,
     search: userReducer.search,
+    users: userReducer.users,
     user: userReducer.user,
     error: userReducer.error,
   };

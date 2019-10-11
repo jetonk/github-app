@@ -5,7 +5,7 @@ export default {
     navigate: PropTypes.func,
   }).isRequired,
   loading: PropTypes.bool.isRequired,
-  fetchUserData: PropTypes.func.isRequired,
+  fetchSearchData: PropTypes.func.isRequired,
   clear: PropTypes.func.isRequired,
   user: PropTypes.shape({
     name: PropTypes.string,

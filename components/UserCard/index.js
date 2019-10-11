@@ -3,11 +3,11 @@ import { TouchableOpacity } from 'react-native';
 import { Card, CardItem, Body, Left, Thumbnail, Text } from 'native-base';
 import { mainTypes } from 'app/types';
 
-const UserCard = ({ user, error, navigation }) => {
+const UserCard = ({ user, error, showUser }) => {
   if (Object.keys(user).length && !error.status) {
     return (
       <Card>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile', user)}>
+        <TouchableOpacity onPress={() => showUser(user)}>
           <CardItem>
             <Left>
               <Thumbnail source={{ uri: user.avatarUrl }} />
@@ -27,12 +27,10 @@ const UserCard = ({ user, error, navigation }) => {
 UserCard.propTypes = {
   user: mainTypes.user,
   error: mainTypes.error,
-  navigation: mainTypes.navigation,
 };
 
 UserCard.defaultProps = {
   user: {},
   error: {},
-  navigation: undefined,
 };
 export default UserCard;

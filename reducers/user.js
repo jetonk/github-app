@@ -1,13 +1,15 @@
 import {
   SEARCH,
   START_FETCHING,
-  SET_USER_DATA,
-  FETCH_USER_DATA_FAILED,
+  SET_SEARCH_DATA,
+  FETCH_SEARCH_DATA_FAILED,
   CLEAR,
+  SET_USER_DATA,
 } from 'app/constants';
 
 const initialState = {
   search: '',
+  users: [],
   user: {},
   loading: false,
   error: {
@@ -28,17 +30,17 @@ function userReducer(state = initialState, action) {
         ...state,
         loading: true,
       };
-    case SET_USER_DATA:
+    case SET_SEARCH_DATA:
       return {
         ...state,
-        user: action.payload.data.user,
+        users: action.payload.edges,
         loading: false,
         error: {
           status: false,
           message: '',
         },
       };
-    case FETCH_USER_DATA_FAILED: {
+    case FETCH_SEARCH_DATA_FAILED: {
       const error = action.payload;
       return {
         ...state,
@@ -49,6 +51,16 @@ function userReducer(state = initialState, action) {
         },
       };
     }
+    case SET_USER_DATA:
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+        error: {
+          status: false,
+          message: '',
+        },
+      };
     case CLEAR:
       return initialState;
     default:
