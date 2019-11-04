@@ -4,8 +4,8 @@ import client from './apollo';
 const searchUser = async search => {
   return client.query({
     query: gql`
-      {
-        search(query: ${search}, type: USER, last: 10) {
+      query Search($search: String!) {
+        search(query: $search, type: USER, last: 10) {
           edges {
             node {
               ... on User {
@@ -36,6 +36,7 @@ const searchUser = async search => {
         }
       }
     `,
+    variables: { search },
   });
 };
 export default searchUser;
