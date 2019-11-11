@@ -1,4 +1,8 @@
 # Github App
+
+![](demo.gif)
+
+
 ## This app it's created using Expo
 ## Libraries/Tools used in the project
 - React Native / Expo
